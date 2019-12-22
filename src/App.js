@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiData} from './util';
+import {SwapiDataString, SwapiDataNumber} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -10,7 +10,8 @@ class App extends Component {
       this.state = {
           category: '',
           searchfield: 0,
-          results: 'Nothing to show yet.'
+          resultString: '',
+          resultNumber: 0
       }
   }
 
@@ -19,11 +20,12 @@ class App extends Component {
 }
 
   onCategoryChange = (event) => {
-    this.setState({category: event.target.value.toLowerCase()})
+    this.setState({category: event.target.value.toLowerCase(), resultNumber: 0, resultString: ''})
   }
 
-  onClick = () => {
-    SwapiData(this.state.category, this.state.searchfield)
+  onClick = async () => {
+    const result = await SwapiDataString(this.state.category, this.state.searchfield);
+    this.setState({resultString: result})
   }
 
   onClickRandom = async () => {
@@ -32,28 +34,28 @@ class App extends Component {
     switch(this.state.category) {
       case 'people':
         randNum = Math.floor(Math.random() * 88);
-        const person = await SwapiData(categoryState, randNum);
-        this.setState({results: person});
+        const person = await SwapiDataNumber(categoryState, randNum);
+        this.setState({resultNumber: person});
         break;
       case 'planets':
         randNum = Math.floor(Math.random() * 62);
-        const planet = await SwapiData(categoryState, randNum);
-        this.setState({results: planet});
+        const planet = await SwapiDataNumber(categoryState, randNum);
+        this.setState({resultNumber: planet});
         break;
       case 'films':
         randNum = Math.floor(Math.random() * 8);
-        const film = await SwapiData(categoryState, randNum);
-        this.setState({results: film});
+        const film = await SwapiDataNumber(categoryState, randNum);
+        this.setState({resultNumber: film});
         break;
       case 'species':
         randNum = Math.floor(Math.random() * 38);
-        const species = await SwapiData(categoryState, randNum);
-        this.setState({results: species});
+        const species = await SwapiDataNumber(categoryState, randNum);
+        this.setState({resultNumber: species});
         break;
       case 'vehicles':
         randNum = Math.floor(Math.random() * 40);
-        const vehicle = await SwapiData(categoryState, randNum);
-        this.setState({results: vehicle});
+        const vehicle = await SwapiDataNumber(categoryState, randNum);
+        this.setState({resultNumber: vehicle});
         break;
       case 'starships':
         alert('Sorry, but \'Surprise me\' unfortunately doesn\'t work with Starships.')
@@ -72,7 +74,7 @@ class App extends Component {
           <SearchBar searchInput={this.onInputChange} listSelector={this.onCategoryChange} fetchData={this.onClick} randomData={this.onClickRandom}/>
         </div>
         <div className="results">
-          <ResultDisplay swapiData={this.state.results} type={this.state.category}/>
+          <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category}/>
         </div>
         <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
         {console.log('searchfield: ', this.state.searchfield)}

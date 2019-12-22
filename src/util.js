@@ -1,15 +1,21 @@
-export const SwapiData = async function(category, userInput) {
-    if (typeof userInput === 'string') {
+export const SwapiDataString = async function(category, userInput) {
+    try {
         const respString = await fetch(`https://swapi.co/api/${category}/?search=${userInput}`);
         const data = await respString.json();
         console.log('util', data);
         return data;
-    } else if (typeof userInput === 'number') {
-        const respNum = await fetch(`https://swapi.co/api/${category}/${userInput}`);
+    } catch (e) {
+        return 'Sorry, an unexpected error has occurred :('
+    }
+}
+
+export const SwapiDataNumber= async function(category, randNum) {
+    try{
+        const respNum = await fetch(`https://swapi.co/api/${category}/${randNum}`);
         const data = await respNum.json();
-        console.log('util', data);
+        console.log('Random util: ', data);
         return data;
-    } else {
-        alert(`Sorry, ${userInput} is not an input we recognize.`)
-    }   
+    } catch (e) {
+        return 'Sorry, an unexpected error has occurred :('
+    }
 }
