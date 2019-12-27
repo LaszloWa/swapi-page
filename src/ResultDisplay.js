@@ -12,7 +12,7 @@ const ResultDisplay = (props) => {
         return 'Nothing to show yet.'
     } else if (resultString === '') {
         return (
-            RandomResult(resultNumber, type)
+            <RandomResult results={resultNumber} type={type} />
         )    
     } else if (resultString !== '') {
         return (
