@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, SwapiDataNumber} from './util';
+import {SwapiDataString, SwapiDataNumber, testFunction} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -39,7 +39,7 @@ class App extends Component {
         break;
       case 'planets':
         randNum = Math.floor(Math.random() * 62);
-        const planet = await SwapiDataNumber(categoryState, randNum);
+        const planet = await testFunction(categoryState, randNum);
         this.setState({resultNumber: planet});
         break;
       case 'films':
@@ -77,9 +77,9 @@ class App extends Component {
           <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category}/>
         </div>
         <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
-        {console.log('searchfield: ', this.state.searchfield)}
+        {/* {console.log('searchfield: ', this.state.searchfield)}
         {console.log('category: ', this.state.category)}
-        {console.log('results: ', this.state.results)}
+        {console.log('results: ', this.state.results)} */}
       </div>
       
   );

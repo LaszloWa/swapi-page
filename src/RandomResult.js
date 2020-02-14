@@ -1,6 +1,7 @@
 import React from 'react';
 
 const RandomResult = ({results, type}) => {
+    console.log('results', results)
     if(type === 'people') {
         return (
             <div>

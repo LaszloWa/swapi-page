@@ -2,19 +2,11 @@ import React from 'react';
 // import {FilmData} from './FilmData';
 
 const SearchResult = ({results, type}) => {
-    console.log('Searchresult: ', results)
-    const resultBanana = results.films;
-    const FilmData = async (prop) => {
-        console.log(prop)
-    }
-    FilmData('resultBanana: ', resultBanana)
-
 
     if(type === 'people') {
         return (
             <div className="people-result">
             {results.map(result => {
-                console.log(result)
                 return (
                     <div key={result.name}>
                         <h2>Name: {result.name}</h2>
