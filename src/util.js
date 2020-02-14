@@ -25,13 +25,16 @@ export const SwapiDataNumber= async function(category, randNum) {
 export const testFunction = async function(category, userInput) {
     const planet = await SwapiDataNumber(category, userInput);
     
-    const residentNames = [];
-    await planet.residents.map(async function(resident) {
+    const residentNames = await[];
+    planet.residents.forEach(async function(resident) {
         const swapiResidentNumber = resident.match(/\d+/g)
         const getResidentName = await fetch(`https://swapi.co/api/people/${swapiResidentNumber}`);
         const response = await getResidentName.json()
-        return residentNames.push(response.name)
+        residentNames.push(response.name)
     })
+
+    //planet.residents = residentNames;
     console.log('residentNames ', residentNames)
+    
     return planet;
 }
