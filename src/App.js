@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, SwapiDataNumber, testFunction} from './util';
+import {SwapiDataString, SwapiDataNumber, getResidents} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -39,8 +39,9 @@ class App extends Component {
         break;
       case 'planets':
         randNum = Math.floor(Math.random() * 62);
-        const planet = await testFunction(categoryState, randNum);
-        this.setState({resultNumber: planet});
+        const planet = await SwapiDataNumber(categoryState, randNum);
+        const planetWithRes = await getResidents(planet);
+        this.setState({resultNumber: planetWithRes});
         break;
       case 'films':
         randNum = Math.floor(Math.random() * 8);

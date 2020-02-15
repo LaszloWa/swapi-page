@@ -20,21 +20,29 @@ export const SwapiDataNumber= async function(category, randNum) {
     }
 }
 
-// Trying to get information about residents on planets
+// Getting resident names
 
-export const testFunction = async function(category, userInput) {
-    const planet = await SwapiDataNumber(category, userInput);
+export const getResidents = async function(planet) {   
     
-    const residentNames = await[];
-    planet.residents.forEach(async function(resident) {
-        const swapiResidentNumber = resident.match(/\d+/g)
-        const getResidentName = await fetch(`https://swapi.co/api/people/${swapiResidentNumber}`);
-        const response = await getResidentName.json()
-        residentNames.push(response.name)
-    })
+    const residentNames = planet.residents.map(async resident => {
+        const swapiResidentNumber = resident.match(/\d+/g);
 
-    //planet.residents = residentNames;
-    console.log('residentNames ', residentNames)
+        const response = await fetch(`https://swapi.co/api/people/${swapiResidentNumber}`);
+
+        const data = await response.json();
+
+        return data.name;
+    })
+    
+    const results = await Promise.all(residentNames);
+    
+    if (results.length) {
+        planet.residents = results;
+    } else {
+        planet.residents = ['None'];
+    }
     
     return planet;
 }
+
+// Getting film names

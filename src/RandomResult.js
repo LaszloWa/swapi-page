@@ -32,7 +32,7 @@ const RandomResult = ({results, type}) => {
                 <p>Terrain: {results.terrain}</p>
                 <p>Surface water: {results.surface_water}</p>
                 <p>Population: {results.population}</p>
-                <p>Residents: {results.residents}</p>
+                <p>Residents: {results.residents.join(', ')}</p>
                 <p>Appeared in: {results.films}</p>
             </div>
         )
