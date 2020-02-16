@@ -3,10 +3,8 @@ import RandomResult from './RandomResult';
 import SearchResult from './SearchResult';
 
 const ResultDisplay = (props) => {
-    console.log(props)
     const {resultNumber, resultString, type} = props
     //if(typeof resultString === 'string') return <div>{resultString}</div>
-    console.log('resulstString: ', resultString)
     
     if (resultString === '' && resultNumber === 0) {
         return 'Nothing to show yet.'

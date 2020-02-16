@@ -1,6 +1,7 @@
 import React from 'react';
 
 const RandomResult = ({results, type}) => {
+    console.log('results', results)
     if(type === 'people') {
         return (
             <div>
@@ -31,8 +32,8 @@ const RandomResult = ({results, type}) => {
                 <p>Terrain: {results.terrain}</p>
                 <p>Surface water: {results.surface_water}</p>
                 <p>Population: {results.population}</p>
-                <p>Residents: {results.residents}</p>
-                <p>Appeared in: {results.films}</p>
+                <p>Residents: {results.residents.join(', ')}</p>
+                <p>Appeared in: {results.films.join(', ')}</p>
             </div>
         )
     } else if (type === 'vehicles') {
@@ -49,8 +50,8 @@ const RandomResult = ({results, type}) => {
                 <p>Cargo capacity: {results.cargo_capacity}</p>
                 <p>Consumables: {results.consumables}</p>
                 <p>Vehicle class: {results.vehicle_class}</p>
-                <p>Known pilots: {results.pilots}</p>
-                <p>Appeared in: {results.films}</p>
+                <p>Known pilots: {results.pilots.join(', ')}</p>
+                <p>Appeared in: {results.films.join(', ')}</p>
             </div>
         )
     } else if (type === 'species') {
