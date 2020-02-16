@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, SwapiDataNumber, getResidents} from './util';
+import {SwapiDataString, SwapiDataNumber, getResidents, getFilms, getPilots} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -29,40 +29,49 @@ class App extends Component {
   }
 
   onClickRandom = async () => {
-    let randNum = 0;
-    let categoryState = this.state.category;
-    switch(this.state.category) {
-      case 'people':
-        randNum = Math.floor(Math.random() * 88);
-        const person = await SwapiDataNumber(categoryState, randNum);
-        this.setState({resultNumber: person});
-        break;
-      case 'planets':
-        randNum = Math.floor(Math.random() * 62);
-        const planet = await SwapiDataNumber(categoryState, randNum);
-        const planetWithRes = await getResidents(planet);
-        this.setState({resultNumber: planetWithRes});
-        break;
-      case 'films':
-        randNum = Math.floor(Math.random() * 8);
-        const film = await SwapiDataNumber(categoryState, randNum);
-        this.setState({resultNumber: film});
-        break;
-      case 'species':
-        randNum = Math.floor(Math.random() * 38);
-        const species = await SwapiDataNumber(categoryState, randNum);
-        this.setState({resultNumber: species});
-        break;
-      case 'vehicles':
-        randNum = Math.floor(Math.random() * 40);
-        const vehicle = await SwapiDataNumber(categoryState, randNum);
-        this.setState({resultNumber: vehicle});
-        break;
-      case 'starships':
-        alert('Sorry, but \'Surprise me\' unfortunately doesn\'t work with Starships.')
-        break;
-      default:
-        alert('Sorry, something seems to have gone wrong, please try again.')
+    try { 
+      let randNum = 0;
+      let categoryState = this.state.category;
+      switch(this.state.category) {
+        case 'people':
+          randNum = Math.floor(Math.random() * 88);
+          const person = await SwapiDataNumber(categoryState, randNum);
+          this.setState({resultNumber: person});
+          break;
+        case 'planets':
+          randNum = Math.floor(Math.random() * 62);
+          const addingPlanet = await SwapiDataNumber(categoryState, randNum);
+          const addingPlanetResidents = await getResidents(addingPlanet);
+          const addingPlanetFilms = await getFilms(addingPlanetResidents);
+          const planet = addingPlanetFilms;
+          this.setState({resultNumber: planet});
+          break;
+        case 'films':
+          randNum = Math.floor(Math.random() * 8);
+          const film = await SwapiDataNumber(categoryState, randNum);
+          this.setState({resultNumber: film});
+          break;
+        case 'species':
+          randNum = Math.floor(Math.random() * 38);
+          const species = await SwapiDataNumber(categoryState, randNum);
+          this.setState({resultNumber: species});
+          break;
+        case 'vehicles':
+          randNum = Math.floor(Math.random() * 40);
+          const addingVehicle = await SwapiDataNumber(categoryState, randNum);
+          const addingVehiclePilots = await getPilots(addingVehicle);
+          const addingVehicleFilms = await getFilms(addingVehiclePilots);
+          const vehicle = addingVehicleFilms;
+          this.setState({resultNumber: vehicle});
+          break;
+        case 'starships':
+          alert('Sorry, but \'Surprise me\' unfortunately doesn\'t work with Starships.')
+          break;
+        default:
+          alert('Sorry, something seems to have gone wrong, please try again.')
+      }
+    } catch {
+      alert('Sorry, something went wrong.')
     }
   }
 
@@ -77,6 +86,7 @@ class App extends Component {
         <div className="results">
           <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category}/>
         </div>
+        <p>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
         <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
         {/* {console.log('searchfield: ', this.state.searchfield)}
         {console.log('category: ', this.state.category)}
