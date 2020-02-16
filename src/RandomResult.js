@@ -15,9 +15,9 @@ const RandomResult = ({results, type}) => {
                 <p>Gender: {results.gender}</p>
                 <p>Homeworld: {results.homeworld}</p>
                 <p>Species: {results.species}</p>
-                <p>Vehicles owned: {results.vehicles}</p>
-                <p>Starships owned: {results.starships}</p>
-                <p>Appeared in: {results.films}</p>
+                <p>Vehicles owned: {results.vehicles.join(', ')}</p>
+                <p>Starships owned: {results.starships.join(', ')}</p>
+                <p>Appeared in: {results.films.join(', ')}</p>
             </div>
         );
     } else if (type === 'planets') {

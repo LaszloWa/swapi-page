@@ -21,36 +21,43 @@ export const SwapiDataNumber= async function(category, randNum) {
     }
 }
 
-// Getting resident names
+// Getting people names
 
-export const getResidents = async function(planet) {   
+export const getPeople = async function(initialArray, category) {   
     
-    const residentNames = planet.residents.map(async resident => {
-        const swapiResidentNumber = resident.match(/\d+/g);
+    let placeholder = '';
+    if (category === 'films') {
+        placeholder = 'characters';
+    } else {
+        placeholder = 'residents';
+    }
 
-        const response = await fetch(`https://swapi.co/api/people/${swapiResidentNumber}`);
+    const peopleNames = initialArray[placeholder].map(async person => {
+        const swapiPersonNumber = person.match(/\d+/g);
+
+        const response = await fetch(`https://swapi.co/api/people/${swapiPersonNumber}`);
 
         const data = await response.json();
-
+        console.log('person ', person)
         return data.name;
     })
     
-    const results = await Promise.all(residentNames);
+    const results = await Promise.all(peopleNames);
     
     if (results.length) {
-        planet.residents = results;
+        initialArray[placeholder] = results;
     } else {
-        planet.residents = ['None'];
+        initialArray[placeholder] = ['None'];
     }
     
-    return planet;
+    return initialArray;
 }
 
 // Getting film names
 
-export const getFilms = async function(planet) {   
+export const getFilms = async function(initialArray) {   
     
-    const filmNames = planet.films.map(async film => {
+    const filmNames = initialArray.films.map(async film => {
         const swapiFilmNumber = film.match(/\d+/g);
 
         const response = await fetch(`https://swapi.co/api/films/${swapiFilmNumber}`);
@@ -63,19 +70,19 @@ export const getFilms = async function(planet) {
     const results = await Promise.all(filmNames);
     
     if (results.length) {
-        planet.films = results;
+        initialArray.films = results;
     } else {
-        planet.films = ['None'];
+        initialArray.films = ['None'];
     }
     
-    return planet;
+    return initialArray;
 }
 
 // Getting pilot names
 
-export const getPilots = async function(planet) {   
+export const getPilots = async function(initialArray) {   
     
-    const pilotNames = planet.pilots.map(async pilot => {
+    const pilotNames = initialArray.pilots.map(async pilot => {
         const swapiPilotNumber = pilot.match(/\d+/g);
 
         const response = await fetch(`https://swapi.co/api/pilots/${swapiPilotNumber}`);
@@ -88,10 +95,120 @@ export const getPilots = async function(planet) {
     const results = await Promise.all(pilotNames);
     
     if (results.length) {
-        planet.pilots = results;
+        initialArray.pilots = results;
     } else {
-        planet.pilots = ['None'];
+        initialArray.pilots = ['None'];
     }
     
-    return planet;
+    return initialArray;
+}
+
+// Getting homeworld name
+
+export const getHomeworld = async function(initialArray) {   
+    const swapiHomeworldNumber = initialArray.homeworld.match(/\d+/g);
+
+    const response = await fetch(`https://swapi.co/api/planets/${swapiHomeworldNumber}`);
+
+    const data = await response.json();
+
+    initialArray.homeworld = data.name;
+    
+    return initialArray;
+}
+
+// Getting species name
+
+export const getSpecies = async function(initialArray) {  
+    const speciesNames = initialArray.species.map(async species => {
+        const swapiSpeciesNumber = species.match(/\d+/g);
+
+        const response = await fetch(`https://swapi.co/api/species/${swapiSpeciesNumber}`);
+
+        const data = await response.json();
+
+        return data.name;
+    })
+    
+    const results = await Promise.all(speciesNames);
+    
+    if (results.length) {
+        initialArray.species = results;
+    } else {
+        initialArray.species = ['None'];
+    }
+    
+    return initialArray;
+}
+
+// Getting planet names
+
+export const getPlanets = async function(initialArray) {   
+    const planetNames = initialArray.planets.map(async planet => {
+        const swapiPlanetNumber = planet.match(/\d+/g);
+
+        const response = await fetch(`https://swapi.co/api/planets/${swapiPlanetNumber}`);
+
+        const data = await response.json();
+
+        return data.title;
+    })
+    
+    const results = await Promise.all(planetNames);
+    
+    if (results.length) {
+        initialArray.planets = results;
+    } else {
+        initialArray.planets = ['None'];
+    }
+    
+    return initialArray;
+}
+
+// Getting vehicle names
+
+export const getVehicles = async function(initialArray) {   
+    const vehicleNames = initialArray.vehicles.map(async vehicle => {
+        const swapiVehicleNumber = vehicle.match(/\d+/g);
+
+        const response = await fetch(`https://swapi.co/api/vehicles/${swapiVehicleNumber}`);
+
+        const data = await response.json();
+
+        return data.name;
+    })
+    
+    const results = await Promise.all(vehicleNames);
+    
+    if (results.length) {
+        initialArray.vehicles = results;
+    } else {
+        initialArray.vehicles = ['None'];
+    }
+    
+    return initialArray;
+}
+
+// Getting starship names
+
+export const getStarships = async function(initialArray) {   
+    const Names = initialArray.starships.map(async starship => {
+        const swapiStarshipNumber = starship.match(/\d+/g);
+
+        const response = await fetch(`https://swapi.co/api/starships/${swapiStarshipNumber}`);
+
+        const data = await response.json();
+
+        return data.name;
+    })
+    
+    const results = await Promise.all(Names);
+    
+    if (results.length) {
+        initialArray.starships = results;
+    } else {
+        initialArray.starships = ['None'];
+    }
+    
+    return initialArray;
 }

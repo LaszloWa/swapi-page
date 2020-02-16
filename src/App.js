@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, SwapiDataNumber, getResidents, getFilms, getPilots} from './util';
+import {SwapiDataString, SwapiDataNumber, getPeople, getFilms, getPilots, getPlanets, getHomeworld, getSpecies, getVehicles, getStarships} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -35,21 +35,29 @@ class App extends Component {
       switch(this.state.category) {
         case 'people':
           randNum = Math.floor(Math.random() * 88);
-          const person = await SwapiDataNumber(categoryState, randNum);
-          this.setState({resultNumber: person});
+          const addingPerson = await SwapiDataNumber(categoryState, randNum);
+          const addingHomeworldPeople = await getHomeworld(addingPerson, categoryState);
+          const addingFilmPeople = await getFilms(addingHomeworldPeople);
+          const addingSpeciesPeople = await getSpecies(addingFilmPeople);
+          const addingVehiclePeople = await getVehicles(addingSpeciesPeople);
+          const addingStarshipPeople = await getStarships(addingVehiclePeople);
+          const people = addingStarshipPeople
+          this.setState({resultNumber: people});
           break;
         case 'planets':
           randNum = Math.floor(Math.random() * 62);
           const addingPlanet = await SwapiDataNumber(categoryState, randNum);
-          const addingPlanetResidents = await getResidents(addingPlanet);
+          const addingPlanetResidents = await getPeople(addingPlanet);
           const addingPlanetFilms = await getFilms(addingPlanetResidents);
           const planet = addingPlanetFilms;
           this.setState({resultNumber: planet});
           break;
         case 'films':
           randNum = Math.floor(Math.random() * 8);
-          const film = await SwapiDataNumber(categoryState, randNum);
-          this.setState({resultNumber: film});
+          const addingFilm = await SwapiDataNumber(categoryState, randNum);
+          debugger
+          const addPeopleFilm = await getPeople(addingFilm, categoryState);
+          this.setState({resultNumber: addPeopleFilm});
           break;
         case 'species':
           randNum = Math.floor(Math.random() * 38);
@@ -65,7 +73,7 @@ class App extends Component {
           this.setState({resultNumber: vehicle});
           break;
         case 'starships':
-          alert('Sorry, but \'Surprise me\' unfortunately doesn\'t work with Starships.')
+          alert(`Sorry, but 'Surprise me' unfortunately doesn't work with Starships.`)
           break;
         default:
           alert('Sorry, something seems to have gone wrong, please try again.')
