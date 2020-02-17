@@ -67,8 +67,8 @@ const RandomResult = ({results, type}) => {
                 <p>Average lifespan: {results.average_lifespan}</p>
                 <p>Homeworld: {results.homeworld}</p>
                 <p>Language: {results.language}</p>
-                <p>Known members: {results.people}</p>
-                <p>Appeared in: {results.films}</p>
+                <p>Known members: {results.people.join(', ')}</p>
+                <p>Appeared in: {results.films.join(', ')}</p>
             </div>
         )
     } else if (type === 'films') {
@@ -79,11 +79,11 @@ const RandomResult = ({results, type}) => {
                 <p>Director: {results.director}</p>
                 <p>Producer(s): {results.producer}</p>
                 <p>Release date: {results.release_date}</p>
-                <p>Characters: {results.characters}</p>
-                <p>Planets: {results.planets}</p>
-                <p>Starships: {results.starships}</p>
-                <p>Vehicles: {results.vehicles}</p>
-                <p>Species: {results.species}</p>
+                <p>Characters: {results.characters.join(', ')}</p>
+                <p>Planets: {results.planets.join(', ')}</p>
+                <p>Starships: {results.starships.join(', ')}</p>
+                <p>Vehicles: {results.vehicles.join(', ')}</p>
+                <p>Species: {results.species.join(', ')}</p>
                 <p>Opening crawl: {results.opening_crawl}</p>
             </div>
         ) 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, SwapiDataNumber, getPeople, getFilms, getPilots, getPlanets, getHomeworld, getSpecies, getVehicles, getStarships} from './util';
+import {SwapiDataString, SwapiDataNumber, getPeople, getFilms, getPilots, getHomeworld, getSpecies, getVehicles, getStarships, getPlanets} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -36,18 +36,18 @@ class App extends Component {
         case 'people':
           randNum = Math.floor(Math.random() * 88);
           const addingPerson = await SwapiDataNumber(categoryState, randNum);
-          const addingHomeworldPeople = await getHomeworld(addingPerson, categoryState);
-          const addingFilmPeople = await getFilms(addingHomeworldPeople);
-          const addingSpeciesPeople = await getSpecies(addingFilmPeople);
-          const addingVehiclePeople = await getVehicles(addingSpeciesPeople);
-          const addingStarshipPeople = await getStarships(addingVehiclePeople);
-          const people = addingStarshipPeople
+          const addingPeopleHomeworld = await getHomeworld(addingPerson, categoryState);
+          const addingPeopleFilms = await getFilms(addingPeopleHomeworld);
+          const addingPeopleSpecies = await getSpecies(addingPeopleFilms);
+          const addingPeopleVehicles = await getVehicles(addingPeopleSpecies);
+          const addingPeopleStarships = await getStarships(addingPeopleVehicles);
+          const people = addingPeopleStarships
           this.setState({resultNumber: people});
           break;
         case 'planets':
           randNum = Math.floor(Math.random() * 62);
           const addingPlanet = await SwapiDataNumber(categoryState, randNum);
-          const addingPlanetResidents = await getPeople(addingPlanet);
+          const addingPlanetResidents = await getPeople(addingPlanet, categoryState);
           const addingPlanetFilms = await getFilms(addingPlanetResidents);
           const planet = addingPlanetFilms;
           this.setState({resultNumber: planet});
@@ -55,13 +55,21 @@ class App extends Component {
         case 'films':
           randNum = Math.floor(Math.random() * 8);
           const addingFilm = await SwapiDataNumber(categoryState, randNum);
-          debugger
-          const addPeopleFilm = await getPeople(addingFilm, categoryState);
-          this.setState({resultNumber: addPeopleFilm});
+          const addingFilmPeople = await getPeople(addingFilm, categoryState);
+          const addingFilmPlanets = await getPlanets(addingFilmPeople);
+          const addingFilmStarships = await getStarships(addingFilmPlanets);
+          const addingFilmVehicles = await getVehicles(addingFilmStarships);
+          const addingFilmSpecies = await getSpecies(addingFilmVehicles);
+          const film = addingFilmSpecies
+          this.setState({resultNumber: film});
           break;
         case 'species':
           randNum = Math.floor(Math.random() * 38);
-          const species = await SwapiDataNumber(categoryState, randNum);
+          const addingSpecies = await SwapiDataNumber(categoryState, randNum);
+          const addingSpeciesFilms = await getFilms(addingSpecies, categoryState);
+          const addingSpeciesHomeworld = await getHomeworld(addingSpeciesFilms);
+          const addingSpeciesPeople = await getPeople(addingSpeciesHomeworld, categoryState);
+          const species = addingSpeciesPeople;
           this.setState({resultNumber: species});
           break;
         case 'vehicles':

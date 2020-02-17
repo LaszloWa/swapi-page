@@ -28,18 +28,23 @@ export const getPeople = async function(initialArray, category) {
     let placeholder = '';
     if (category === 'films') {
         placeholder = 'characters';
-    } else {
+    } else if (category === 'planets') {
         placeholder = 'residents';
+    } else if (category === 'species') {
+        placeholder = 'people';
     }
 
     const peopleNames = initialArray[placeholder].map(async person => {
         const swapiPersonNumber = person.match(/\d+/g);
+        
+        if (swapiPersonNumber[0] === '1') { // Workaround for a network error that only occurs with Luke
+            return 'Luke Skywalker'
+        } else {
+            const response = await fetch(`https://swapi.co/api/people/${swapiPersonNumber}`);
 
-        const response = await fetch(`https://swapi.co/api/people/${swapiPersonNumber}`);
-
-        const data = await response.json();
-        console.log('person ', person)
-        return data.name;
+            const data = await response.json();
+            return data.name;
+        } 
     })
     
     const results = await Promise.all(peopleNames);
@@ -151,7 +156,7 @@ export const getPlanets = async function(initialArray) {
 
         const data = await response.json();
 
-        return data.title;
+        return data.name;
     })
     
     const results = await Promise.all(planetNames);
