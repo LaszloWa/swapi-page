@@ -1,8 +1,11 @@
+// Functions to fetch the user input, depending on random input ('Surprise me') or user input
+
 export const SwapiDataString = async function(category, userInput) {
     try {
         const respString = await fetch(`https://swapi.co/api/${category}/?search=${userInput}`);
-        const data = await respString.json();
+        let data = await respString.json();
         console.log('util', data);
+
         return data;
     } catch (e) {
         return 'Sorry, an unexpected error has occurred :('
@@ -20,6 +23,8 @@ export const SwapiDataNumber= async function(category, randNum) {
         return 'Sorry, an unexpected error has occurred :('
     }
 }
+
+// Functions to get additional information on individual properties
 
 // Getting people names
 
@@ -216,4 +221,72 @@ export const getStarships = async function(initialArray) {
     }
     
     return initialArray;
+}
+
+
+// functions fetching data for the different categories
+
+// Check if user wants random result or not
+const checkIfRandom = function(input) {
+    let queryType = '';
+    if(input) {
+        queryType = SwapiDataNumber
+    } else {
+        queryType = SwapiDataString
+    }
+    return queryType;
+}
+
+// all data for category 'people'
+export const peopleCategory = async function (category, input, isRandom) {
+    const addingPerson = await SwapiDataNumber(category, input);
+    const addingPeopleHomeworld = await getHomeworld(addingPerson, category);
+    const addingPeopleFilms = await getFilms(addingPeopleHomeworld);
+    const addingPeopleSpecies = await getSpecies(addingPeopleFilms);
+    const addingPeopleVehicles = await getVehicles(addingPeopleSpecies);
+    const addingPeopleStarships = await getStarships(addingPeopleVehicles);
+    
+    return addingPeopleStarships;
+}
+
+// all data for category 'planets'
+export const planetCategory = async function (category, input, isRandom) {
+    const addingPlanet = await SwapiDataNumber(category, input);
+    const addingPlanetResidents = await getPeople(addingPlanet, category);
+    const addingPlanetFilms = await getFilms(addingPlanetResidents);
+
+    return addingPlanetFilms;
+}
+
+// all data for category 'films'
+export const filmCategory = async function (category, input, isRandom) {
+    const addingFilm = await SwapiDataNumber(category, input);
+    const addingFilmPeople = await getPeople(addingFilm, category);
+    const addingFilmPlanets = await getPlanets(addingFilmPeople);
+    const addingFilmStarships = await getStarships(addingFilmPlanets);
+    const addingFilmVehicles = await getVehicles(addingFilmStarships);
+    const addingFilmSpecies = await getSpecies(addingFilmVehicles);
+
+    return addingFilmSpecies;
+}
+
+// all data for category 'species'
+export const speciesCategory = async function (category, input, isRandom) {
+    const addingSpecies = await SwapiDataNumber(category, input);
+    const addingSpeciesFilms = await getFilms(addingSpecies, category);
+    const addingSpeciesHomeworld = await getHomeworld(addingSpeciesFilms);
+    const addingSpeciesPeople = await getPeople(addingSpeciesHomeworld, category);
+
+    return addingSpeciesPeople;
+}
+
+// all data for category 'vehicles'
+export const vehiclesCategory = async function (category, input, isRandom) {
+    let queryType = checkIfRandom(isRandom);
+    console.log(queryType)
+    const addingVehicle = await queryType(category, input);
+    const addingVehiclePilots = await getPilots(addingVehicle);
+    const addingVehicleFilms = await getFilms(addingVehiclePilots);
+
+    return addingVehicleFilms;
 }

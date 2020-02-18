@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, SwapiDataNumber, getPeople, getFilms, getPilots, getHomeworld, getSpecies, getVehicles, getStarships, getPlanets} from './util';
+import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -28,56 +28,40 @@ class App extends Component {
     this.setState({resultString: result})
   }
 
+  onClickDetails = async (event) => {
+    //const isRandom = false;
+    // you want to recycle the functions you made for onClickRandom to fetch e.g. all info for people results. Not sure how to implement that yet though...
+  }
+
   onClickRandom = async () => {
     try { 
       let randNum = 0;
       let categoryState = this.state.category;
+      const isRandom = true;
       switch(this.state.category) {
         case 'people':
           randNum = Math.floor(Math.random() * 88);
-          const addingPerson = await SwapiDataNumber(categoryState, randNum);
-          const addingPeopleHomeworld = await getHomeworld(addingPerson, categoryState);
-          const addingPeopleFilms = await getFilms(addingPeopleHomeworld);
-          const addingPeopleSpecies = await getSpecies(addingPeopleFilms);
-          const addingPeopleVehicles = await getVehicles(addingPeopleSpecies);
-          const addingPeopleStarships = await getStarships(addingPeopleVehicles);
-          const people = addingPeopleStarships
+          const people = await peopleCategory(categoryState, randNum, isRandom);
           this.setState({resultNumber: people});
           break;
         case 'planets':
           randNum = Math.floor(Math.random() * 62);
-          const addingPlanet = await SwapiDataNumber(categoryState, randNum);
-          const addingPlanetResidents = await getPeople(addingPlanet, categoryState);
-          const addingPlanetFilms = await getFilms(addingPlanetResidents);
-          const planet = addingPlanetFilms;
+          const planet = await planetCategory(categoryState, randNum, isRandom);
           this.setState({resultNumber: planet});
           break;
         case 'films':
           randNum = Math.floor(Math.random() * 8);
-          const addingFilm = await SwapiDataNumber(categoryState, randNum);
-          const addingFilmPeople = await getPeople(addingFilm, categoryState);
-          const addingFilmPlanets = await getPlanets(addingFilmPeople);
-          const addingFilmStarships = await getStarships(addingFilmPlanets);
-          const addingFilmVehicles = await getVehicles(addingFilmStarships);
-          const addingFilmSpecies = await getSpecies(addingFilmVehicles);
-          const film = addingFilmSpecies
+          const film = await filmCategory(categoryState, randNum, isRandom);
           this.setState({resultNumber: film});
           break;
         case 'species':
           randNum = Math.floor(Math.random() * 38);
-          const addingSpecies = await SwapiDataNumber(categoryState, randNum);
-          const addingSpeciesFilms = await getFilms(addingSpecies, categoryState);
-          const addingSpeciesHomeworld = await getHomeworld(addingSpeciesFilms);
-          const addingSpeciesPeople = await getPeople(addingSpeciesHomeworld, categoryState);
-          const species = addingSpeciesPeople;
+          const species = await speciesCategory(categoryState, randNum, isRandom);
           this.setState({resultNumber: species});
           break;
         case 'vehicles':
           randNum = Math.floor(Math.random() * 40);
-          const addingVehicle = await SwapiDataNumber(categoryState, randNum);
-          const addingVehiclePilots = await getPilots(addingVehicle);
-          const addingVehicleFilms = await getFilms(addingVehiclePilots);
-          const vehicle = addingVehicleFilms;
+          const vehicle = await vehiclesCategory(categoryState, randNum, isRandom);
           this.setState({resultNumber: vehicle});
           break;
         case 'starships':
@@ -100,7 +84,7 @@ class App extends Component {
           <SearchBar searchInput={this.onInputChange} listSelector={this.onCategoryChange} fetchData={this.onClick} randomData={this.onClickRandom}/>
         </div>
         <div className="results">
-          <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category}/>
+          <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category} fetchDetails={this.onClickDetails}/>
         </div>
         <p>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
         <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
