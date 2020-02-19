@@ -20,9 +20,9 @@ const SearchResult = ({results, type, getDetails}) => {
                         <p>Gender: {result.gender}</p>
                         <p>Homeworld: {result.homeworld}</p>
                         <p>Species: {result.species}</p>
-                        <p>Vehicles owned: {result.vehicles}</p>
-                        <p>Starships owned: {result.starships}</p>
-                        <p>Appeared in: {result.films}</p>
+                        <p>Vehicles owned: {results.vehicles instanceof Array ? results.vehicles.join(', ') : results.vehicles}</p>
+                        <p>Starships owned: {results.starships instanceof Array ? results.starships.join(', ') : results.starships}</p>
+                        <p>Appeared in: {results.films instanceof Array ? results.films.join(', ') : results.films}</p>
                     </div>
                 )
                 })
@@ -45,8 +45,8 @@ const SearchResult = ({results, type, getDetails}) => {
                             <p>Terrain: {result.terrain}</p>
                             <p>Surface water: {result.surface_water}</p>
                             <p>Population: {result.population}</p>
-                            <p>Residents: {result.residents}</p>
-                            <p>Appeared in: {result.films}</p>
+                            <p>Residents: {results.residents instanceof Array ? results.residents.join(', ') : results.residents}</p>
+                            <p>Appeared in: {results.films instanceof Array ? results.films.join(', ') : results.films}</p>
                         </div>
                     )})
                 }
@@ -70,8 +70,8 @@ const SearchResult = ({results, type, getDetails}) => {
                             <p>Cargo capacity: {result.cargo_capacity}</p>
                             <p>Consumables: {result.consumables}</p>
                             <p>Vehicle class: {result.vehicle_class}</p>
-                            <p>Known pilots: {result.pilots}</p>
-                            <p>Appeared in: {result.films}</p>
+                            <p>Known pilots: {results.pilots instanceof Array ? results.pilots.join(', ') : results.pilots}</p>
+                            <p>Appeared in: {results.films instanceof Array ? results.films.join(', ') : results.films}</p>
                         </div>
                     )})
                 }
@@ -94,8 +94,8 @@ const SearchResult = ({results, type, getDetails}) => {
                             <p>Average lifespan: {result.average_lifespan}</p>
                             <p>Homeworld: {result.homeworld}</p>
                             <p>Language: {result.language}</p>
-                            <p>Known members: {result.people}</p>
-                            <p>Appeared in: {result.films}</p>
+                            <p>Known members: {results.people instanceof Array ? results.people.join(', ') : results.people}</p>
+                            <p>Appeared in: {results.films instanceof Array ? results.films.join(', ') : results.films}</p>
                         </div>
                     )})
                 }
@@ -113,11 +113,11 @@ const SearchResult = ({results, type, getDetails}) => {
                             <p>Director: {result.director}</p>
                             <p>Producer(s): {result.producer}</p>
                             <p>Release date: {result.release_date}</p>
-                            <p>Characters: {result.characters}</p>
-                            <p>Planets: {result.planets}</p>
-                            <p>Starships: {result.starships}</p>
-                            <p>Vehicles: {result.vehicles}</p>
-                            <p>Species: {result.species}</p>
+                            <p>Characters: {results.characters instanceof Array ? results.characters.join(', ') : results.characters}</p>
+                            <p>Planets: {results.planets instanceof Array ? results.planets.join(', ') : results.planets}</p>
+                            <p>Starships: {results.starships instanceof Array ? results.starships.join(', ') : results.starships}</p>
+                            <p>Vehicles: {results.vehicles instanceof Array ? results.vehicles.join(', ') : results.vehicles}</p>
+                            <p>Species: {results.species instanceof Array ? results.species.join(', ') : results.species}</p>
                             <p>Opening crawl: {result.opening_crawl}</p>
                         </div>
                     )})
@@ -145,8 +145,8 @@ const SearchResult = ({results, type, getDetails}) => {
                             <p>Hyperdrive rating: {result.hyperdrive_rating}</p>
                             <p>MGLT: {result.MGLT}</p>
                             <p>Starship class: {result.starship_class}</p>
-                            <p>Known pilots: {result.pilots}</p>
-                            <p>Appeared in: {result.films}</p>
+                            <p>Known pilots: {results.pilots instanceof Array ? results.pilots.join(', ') : results.pilots}</p>
+                            <p>Appeared in: {results.films instanceof Array ? results.films.join(', ') : results.films}</p>
                         </div>
                     )})
                 }

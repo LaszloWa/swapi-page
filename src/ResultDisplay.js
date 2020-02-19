@@ -10,11 +10,11 @@ const ResultDisplay = (props) => {
         return 'Nothing to show yet.'
     } else if (resultString === '') {
         return (
-            <RandomResult results={resultNumber} type={type} />
+            <RandomResult results={resultNumber} type={type} getDetails={fetchDetails} />
         )    
     } else if (resultString !== '') {
         return (
-            <SearchResult results={resultString.results} type={type} getDetails={fetchDetails}/>
+            <SearchResult results={resultString} type={type} getDetails={fetchDetails}/>
         )
     }
     

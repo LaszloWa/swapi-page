@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory} from './util';
+import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory, SwapiDataNumber, getPeople} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -24,55 +24,41 @@ class App extends Component {
   }
 
   onClick = async () => {
+    this.setState({resultNumber: 0})
     const result = await SwapiDataString(this.state.category, this.state.searchfield);
-    this.setState({resultString: result})
-  }
-
-  onClickDetails = async (event) => {
-    //const isRandom = false;
-    // you want to recycle the functions you made for onClickRandom to fetch e.g. all info for people results. Not sure how to implement that yet though...
+    this.setState({resultString: result.results})
   }
 
   onClickRandom = async () => {
     try { 
-      let randNum = 0;
-      let categoryState = this.state.category;
-      const isRandom = true;
-      switch(this.state.category) {
-        case 'people':
-          randNum = Math.floor(Math.random() * 88);
-          const people = await peopleCategory(categoryState, randNum, isRandom);
-          this.setState({resultNumber: people});
-          break;
-        case 'planets':
-          randNum = Math.floor(Math.random() * 62);
-          const planet = await planetCategory(categoryState, randNum, isRandom);
-          this.setState({resultNumber: planet});
-          break;
-        case 'films':
-          randNum = Math.floor(Math.random() * 8);
-          const film = await filmCategory(categoryState, randNum, isRandom);
-          this.setState({resultNumber: film});
-          break;
-        case 'species':
-          randNum = Math.floor(Math.random() * 38);
-          const species = await speciesCategory(categoryState, randNum, isRandom);
-          this.setState({resultNumber: species});
-          break;
-        case 'vehicles':
-          randNum = Math.floor(Math.random() * 40);
-          const vehicle = await vehiclesCategory(categoryState, randNum, isRandom);
-          this.setState({resultNumber: vehicle});
-          break;
-        case 'starships':
-          alert(`Sorry, but 'Surprise me' unfortunately doesn't work with Starships.`)
-          break;
-        default:
-          alert('Sorry, something seems to have gone wrong, please try again.')
-      }
+      this.setState({resultString: ''})
+      const result = await SwapiDataNumber(this.state.category);
+      this.setState({resultNumber: result})
+      
     } catch {
       alert('Sorry, something went wrong.')
     }
+  }
+
+  onClickDetails = async (event) => {
+    console.log('peeoopeeoopeeoo')
+    const eventTargetValue = event.target.value;
+    console.log('the result ', this.state.resultString)
+    console.log(this.state.resultString.results)
+    console.log(this.state.resultString[event.target.value])
+    const result = await peopleCategory(this.state.category, this.state.resultString[eventTargetValue]);
+    
+    // eventTargetValue === 'random' 
+    //   ? await peopleCategory(this.state.category, this.state.resultNumber)
+    //   : await peopleCategory(this.state.category, this.state.resultString.results[eventTargetValue]);
+    const resultArray = [result]
+    const resultObject = {resultArray}
+    console.log('result ', result)
+    console.log(resultArray)
+    // eventTargetValue === 'random' 
+    //   ? this.setState({resultNumber: result})
+    //   : this.setState({resultString: resultArray})
+    this.setState({resultString: resultArray})
   }
 
   render() {
