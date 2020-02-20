@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory, SwapiDataNumber, getPeople} from './util';
+import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory, SwapiDataNumber} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -26,7 +26,7 @@ class App extends Component {
   onClick = async () => {
     this.setState({resultNumber: 0})
     const result = await SwapiDataString(this.state.category, this.state.searchfield);
-    this.setState({resultString: result.results})
+    this.setState({resultString: result})
   }
 
   onClickRandom = async () => {
@@ -34,31 +34,47 @@ class App extends Component {
       this.setState({resultString: ''})
       const result = await SwapiDataNumber(this.state.category);
       this.setState({resultNumber: result})
-      
     } catch {
       alert('Sorry, something went wrong.')
     }
   }
 
   onClickDetails = async (event) => {
-    console.log('peeoopeeoopeeoo')
     const eventTargetValue = event.target.value;
     console.log('the result ', this.state.resultString)
-    console.log(this.state.resultString.results)
-    console.log(this.state.resultString[event.target.value])
-    const result = await peopleCategory(this.state.category, this.state.resultString[eventTargetValue]);
+    let categorySelector = '';
+
+    switch (this.state.category) {
+      case 'people':
+        categorySelector = peopleCategory;
+        break;
+      case 'planets':
+        categorySelector = planetCategory;
+        break;
+      case 'films':
+        categorySelector = filmCategory;
+        break;
+      case 'vehicles':
+        categorySelector = vehiclesCategory;
+        break;
+      case 'starships':
+      categorySelector = vehiclesCategory;
+      break;
+      case 'species':
+        categorySelector = speciesCategory;
+        break;
+      default:
+        break;
+    }
+   
+    const result = eventTargetValue === 'random' 
+    ? await categorySelector(this.state.category, this.state.resultNumber) 
+    : await categorySelector(this.state.category, this.state.resultString, [eventTargetValue])
     
-    // eventTargetValue === 'random' 
-    //   ? await peopleCategory(this.state.category, this.state.resultNumber)
-    //   : await peopleCategory(this.state.category, this.state.resultString.results[eventTargetValue]);
-    const resultArray = [result]
-    const resultObject = {resultArray}
     console.log('result ', result)
-    console.log(resultArray)
-    // eventTargetValue === 'random' 
-    //   ? this.setState({resultNumber: result})
-    //   : this.setState({resultString: resultArray})
-    this.setState({resultString: resultArray})
+    eventTargetValue === 'random'
+    ? this.setState({resultNumber: result})
+    : this.setState({resultString: result})
   }
 
   render() {
@@ -74,9 +90,6 @@ class App extends Component {
         </div>
         <p>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
         <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
-        {/* {console.log('searchfield: ', this.state.searchfield)}
-        {console.log('category: ', this.state.category)}
-        {console.log('results: ', this.state.results)} */}
       </div>
       
   );

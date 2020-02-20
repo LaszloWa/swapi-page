@@ -6,7 +6,7 @@ const RandomResult = ({results, type, getDetails}) => {
         return (
             <div>
                 <h2>Name: {results.name}</h2>
-                <button value={'random'} type='button' onClick={getDetails}>Display details</button>
+                <button value={'random'} className={'randomButton'} type='button' onClick={getDetails}>Display details</button>
                 <p>Height: {results.height}</p>
                 <p>Weight: {results.mass}</p>
                 <p>Hair color: {results.hair_color}</p>
@@ -25,6 +25,7 @@ const RandomResult = ({results, type, getDetails}) => {
         return (
             <div>
                 <h2>Name: {results.name}</h2>
+                <button value={'random'} type='button' onClick={getDetails}>Display details</button>
                 <p>Rotation period: {results.rotation_period}</p>
                 <p>Orbital period: {results.orbital_period}</p>
                 <p>Diameter: {results.diameter}</p>
@@ -41,6 +42,7 @@ const RandomResult = ({results, type, getDetails}) => {
         return (
             <div>
                 <h2>Name: {results.name}</h2>
+                <button value={'random'} type='button' onClick={getDetails}>Display details</button>
                 <p>Model: {results.model}</p>
                 <p>Manufacturer: {results.manufacturer}</p>
                 <p>Cost (in credits): {results.cost_in_credits}</p>
@@ -59,6 +61,7 @@ const RandomResult = ({results, type, getDetails}) => {
         return (
             <div>
                 <h2>Name: {results.name}</h2>
+                <button value={'random'} type='button' onClick={getDetails}>Display details</button>
                 <p>Classification: {results.classification}</p>
                 <p>Designation: {results.designation}</p>
                 <p>Average height: {results.average_height}</p>
@@ -76,6 +79,7 @@ const RandomResult = ({results, type, getDetails}) => {
         return (
             <div>
                 <h2>Title: {results.title}</h2>
+                <button value={'random'} type='button' onClick={getDetails}>Display details</button>
                 <p>Episode: {results.episode_id}</p>
                 <p>Director: {results.director}</p>
                 <p>Producer(s): {results.producer}</p>

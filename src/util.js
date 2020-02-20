@@ -4,9 +4,9 @@ export const SwapiDataString = async function(category, userInput) {
     try {
         const respString = await fetch(`https://swapi.co/api/${category}/?search=${userInput}`);
         let data = await respString.json();
-        console.log('util', data);
+        console.log('util', data.results);
 
-        return data;
+        return data.results;
     } catch (e) {
         return 'Sorry, an unexpected error has occurred :('
     }
@@ -120,11 +120,11 @@ export const getPilots = async function(initialArray) {
     const pilotNames = initialArray.pilots.map(async pilot => {
         const swapiPilotNumber = pilot.match(/\d+/g);
 
-        const response = await fetch(`https://swapi.co/api/pilots/${swapiPilotNumber}`);
+        const response = await fetch(`https://swapi.co/api/people/${swapiPilotNumber}`);
 
         const data = await response.json();
 
-        return data.title;
+        return data.name;
     })
     
     const results = await Promise.all(pilotNames);
@@ -251,56 +251,89 @@ export const getStarships = async function(initialArray) {
 
 // functions fetching data for the different categories
 
+const inputArrayFunction = function(array, index) {
+    let inputArray = '';
+
+    if (array instanceof Array) {
+        inputArray = array[parseInt(index)];
+    } else {
+        inputArray = array;
+    }
+
+    return inputArray;
+}
+
+const outputArrayFunction = function(array, index, result) {
+    let outputArray = array;
+
+    if (array instanceof Array) {
+        outputArray[parseInt(index)] = result;
+    } else {
+        outputArray = result;
+    }
+
+    return outputArray;
+}
+
 // all data for category 'people'
-export const peopleCategory = async function (category, inputArray, index) {
+export const peopleCategory = async function (category, array, index) {
+    const inputArray = inputArrayFunction(array, index);
+    console.log(inputArray)
     const addingPeopleHomeworld = await getHomeworld(inputArray, category);
     const addingPeopleFilms = await getFilms(addingPeopleHomeworld);
     const addingPeopleSpecies = await getSpecies(addingPeopleFilms);
     const addingPeopleVehicles = await getVehicles(addingPeopleSpecies);
     const addingPeopleStarships = await getStarships(addingPeopleVehicles);
-    const result = addingPeopleStarships;
 
-    //const addingPerson = await SwapiDataNumber(category, input);
-    
-    return result;
+    const outputArray = outputArrayFunction(array, index, addingPeopleStarships);
+
+    return outputArray;
 }
 
 // all data for category 'planets'
-export const planetCategory = async function (category, input, isRandom) {
-    const addingPlanet = await SwapiDataNumber(category, input);
-    const addingPlanetResidents = await getPeople(addingPlanet, category);
+export const planetCategory = async function (category, array, index) {
+    const inputArray = inputArrayFunction(array, index);
+    const addingPlanetResidents = await getPeople(inputArray, category);
     const addingPlanetFilms = await getFilms(addingPlanetResidents);
 
-    return addingPlanetFilms;
+    const outputArray = outputArrayFunction(array, index, addingPlanetFilms);
+
+    return outputArray;
 }
 
 // all data for category 'films'
-export const filmCategory = async function (category, input, isRandom) {
-    const addingFilm = await SwapiDataNumber(category, input);
-    const addingFilmPeople = await getPeople(addingFilm, category);
+export const filmCategory = async function (category, array, index) {
+    const inputArray = inputArrayFunction(array, index);
+    const addingFilmPeople = await getPeople(inputArray, category);
     const addingFilmPlanets = await getPlanets(addingFilmPeople);
     const addingFilmStarships = await getStarships(addingFilmPlanets);
     const addingFilmVehicles = await getVehicles(addingFilmStarships);
     const addingFilmSpecies = await getSpecies(addingFilmVehicles);
+    
+    const outputArray = outputArrayFunction(array, index, addingFilmSpecies);
 
-    return addingFilmSpecies;
+    return outputArray;
 }
 
 // all data for category 'species'
-export const speciesCategory = async function (category, input, isRandom) {
-    const addingSpecies = await SwapiDataNumber(category, input);
-    const addingSpeciesFilms = await getFilms(addingSpecies, category);
+export const speciesCategory = async function (category, array, index) {
+    const inputArray = inputArrayFunction(array, index);
+    const addingSpeciesFilms = await getFilms(inputArray, category);
     const addingSpeciesHomeworld = await getHomeworld(addingSpeciesFilms);
     const addingSpeciesPeople = await getPeople(addingSpeciesHomeworld, category);
 
-    return addingSpeciesPeople;
+    const outputArray = outputArrayFunction(array, index, addingSpeciesPeople);
+
+    return outputArray;
 }
 
 // all data for category 'vehicles'
-export const vehiclesCategory = async function (category, input, isRandom) {
-    const addingVehicle = await SwapiDataNumber(category, input);
-    const addingVehiclePilots = await getPilots(addingVehicle);
+export const vehiclesCategory = async function (category, array, index) {
+    const inputArray = inputArrayFunction(array, index);
+    const addingVehiclePilots = await getPilots(inputArray);
     const addingVehicleFilms = await getFilms(addingVehiclePilots);
 
-    return addingVehicleFilms;
+    const outputArray = outputArrayFunction(array, index, addingVehicleFilms);
+
+    return outputArray;
 }
