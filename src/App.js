@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {SwapiDataString, SwapiDataNumber, getResidents, getFilms, getPilots} from './util';
+import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory, SwapiDataNumber} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
 
@@ -11,7 +11,8 @@ class App extends Component {
           category: '',
           searchfield: 0,
           resultString: '',
-          resultNumber: 0
+          resultNumber: 0,
+          detailsResolved: [],
       }
   }
 
@@ -24,55 +25,69 @@ class App extends Component {
   }
 
   onClick = async () => {
+    this.setState({resultNumber: 0})
     const result = await SwapiDataString(this.state.category, this.state.searchfield);
-    this.setState({resultString: result})
+    this.setState({resultString: result, detailsResolved: []})
   }
 
   onClickRandom = async () => {
     try { 
-      let randNum = 0;
-      let categoryState = this.state.category;
-      switch(this.state.category) {
-        case 'people':
-          randNum = Math.floor(Math.random() * 88);
-          const person = await SwapiDataNumber(categoryState, randNum);
-          this.setState({resultNumber: person});
-          break;
-        case 'planets':
-          randNum = Math.floor(Math.random() * 62);
-          const addingPlanet = await SwapiDataNumber(categoryState, randNum);
-          const addingPlanetResidents = await getResidents(addingPlanet);
-          const addingPlanetFilms = await getFilms(addingPlanetResidents);
-          const planet = addingPlanetFilms;
-          this.setState({resultNumber: planet});
-          break;
-        case 'films':
-          randNum = Math.floor(Math.random() * 8);
-          const film = await SwapiDataNumber(categoryState, randNum);
-          this.setState({resultNumber: film});
-          break;
-        case 'species':
-          randNum = Math.floor(Math.random() * 38);
-          const species = await SwapiDataNumber(categoryState, randNum);
-          this.setState({resultNumber: species});
-          break;
-        case 'vehicles':
-          randNum = Math.floor(Math.random() * 40);
-          const addingVehicle = await SwapiDataNumber(categoryState, randNum);
-          const addingVehiclePilots = await getPilots(addingVehicle);
-          const addingVehicleFilms = await getFilms(addingVehiclePilots);
-          const vehicle = addingVehicleFilms;
-          this.setState({resultNumber: vehicle});
-          break;
-        case 'starships':
-          alert('Sorry, but \'Surprise me\' unfortunately doesn\'t work with Starships.')
-          break;
-        default:
-          alert('Sorry, something seems to have gone wrong, please try again.')
-      }
+      this.setState({resultString: ''})
+      const result = await SwapiDataNumber(this.state.category);
+      this.setState({resultNumber: result, detailsResolved: []})
     } catch {
       alert('Sorry, something went wrong.')
     }
+  }
+
+  onClickDetails = async (event) => {
+    
+    const eventTargetValue = event.target.value;
+    console.log(this.state.detailsResolved)
+
+    if (this.state.detailsResolved.includes(eventTargetValue)) {
+      console.log('Already pressed the button')
+    } else {
+      console.log('the result ', this.state.resultString)
+      let categorySelector = '';
+
+      switch (this.state.category) {
+        case 'people':
+          categorySelector = peopleCategory;
+          break;
+        case 'planets':
+          categorySelector = planetCategory;
+          break;
+        case 'films':
+          categorySelector = filmCategory;
+          break;
+        case 'vehicles':
+          categorySelector = vehiclesCategory;
+          break;
+        case 'starships':
+        categorySelector = vehiclesCategory;
+        break;
+        case 'species':
+          categorySelector = speciesCategory;
+          break;
+        default:
+          break;
+      }
+    
+      const result = eventTargetValue === 'random' 
+      ? await categorySelector(this.state.category, this.state.resultNumber) 
+      : await categorySelector(this.state.category, this.state.resultString, [eventTargetValue])
+      
+      console.log('result ', result)
+      eventTargetValue === 'random'
+      ? this.setState({resultNumber: result})
+      : this.setState({resultString: result})
+
+      const retrievedDetails = this.state.detailsResolved
+      retrievedDetails.push(eventTargetValue);
+
+      this.setState({detailsResolved: retrievedDetails})
+    } 
   }
 
   render() {
@@ -84,13 +99,10 @@ class App extends Component {
           <SearchBar searchInput={this.onInputChange} listSelector={this.onCategoryChange} fetchData={this.onClick} randomData={this.onClickRandom}/>
         </div>
         <div className="results">
-          <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category}/>
+          <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category} fetchDetails={this.onClickDetails}/>
         </div>
         <p>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
         <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
-        {/* {console.log('searchfield: ', this.state.searchfield)}
-        {console.log('category: ', this.state.category)}
-        {console.log('results: ', this.state.results)} */}
       </div>
       
   );
