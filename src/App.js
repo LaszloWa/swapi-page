@@ -11,7 +11,8 @@ class App extends Component {
           category: '',
           searchfield: 0,
           resultString: '',
-          resultNumber: 0
+          resultNumber: 0,
+          detailsResolved: [],
       }
   }
 
@@ -26,55 +27,67 @@ class App extends Component {
   onClick = async () => {
     this.setState({resultNumber: 0})
     const result = await SwapiDataString(this.state.category, this.state.searchfield);
-    this.setState({resultString: result})
+    this.setState({resultString: result, detailsResolved: []})
   }
 
   onClickRandom = async () => {
     try { 
       this.setState({resultString: ''})
       const result = await SwapiDataNumber(this.state.category);
-      this.setState({resultNumber: result})
+      this.setState({resultNumber: result, detailsResolved: []})
     } catch {
       alert('Sorry, something went wrong.')
     }
   }
 
   onClickDetails = async (event) => {
+    
     const eventTargetValue = event.target.value;
-    console.log('the result ', this.state.resultString)
-    let categorySelector = '';
+    console.log(this.state.detailsResolved)
 
-    switch (this.state.category) {
-      case 'people':
-        categorySelector = peopleCategory;
-        break;
-      case 'planets':
-        categorySelector = planetCategory;
-        break;
-      case 'films':
-        categorySelector = filmCategory;
-        break;
-      case 'vehicles':
+    if (this.state.detailsResolved.includes(eventTargetValue)) {
+      console.log('Already pressed the button')
+    } else {
+      console.log('the result ', this.state.resultString)
+      let categorySelector = '';
+
+      switch (this.state.category) {
+        case 'people':
+          categorySelector = peopleCategory;
+          break;
+        case 'planets':
+          categorySelector = planetCategory;
+          break;
+        case 'films':
+          categorySelector = filmCategory;
+          break;
+        case 'vehicles':
+          categorySelector = vehiclesCategory;
+          break;
+        case 'starships':
         categorySelector = vehiclesCategory;
         break;
-      case 'starships':
-      categorySelector = vehiclesCategory;
-      break;
-      case 'species':
-        categorySelector = speciesCategory;
-        break;
-      default:
-        break;
-    }
-   
-    const result = eventTargetValue === 'random' 
-    ? await categorySelector(this.state.category, this.state.resultNumber) 
-    : await categorySelector(this.state.category, this.state.resultString, [eventTargetValue])
+        case 'species':
+          categorySelector = speciesCategory;
+          break;
+        default:
+          break;
+      }
     
-    console.log('result ', result)
-    eventTargetValue === 'random'
-    ? this.setState({resultNumber: result})
-    : this.setState({resultString: result})
+      const result = eventTargetValue === 'random' 
+      ? await categorySelector(this.state.category, this.state.resultNumber) 
+      : await categorySelector(this.state.category, this.state.resultString, [eventTargetValue])
+      
+      console.log('result ', result)
+      eventTargetValue === 'random'
+      ? this.setState({resultNumber: result})
+      : this.setState({resultString: result})
+
+      const retrievedDetails = this.state.detailsResolved
+      retrievedDetails.push(eventTargetValue);
+
+      this.setState({detailsResolved: retrievedDetails})
+    } 
   }
 
   render() {

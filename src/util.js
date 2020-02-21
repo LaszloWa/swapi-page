@@ -120,11 +120,14 @@ export const getPilots = async function(initialArray) {
     const pilotNames = initialArray.pilots.map(async pilot => {
         const swapiPilotNumber = pilot.match(/\d+/g);
 
-        const response = await fetch(`https://swapi.co/api/people/${swapiPilotNumber}`);
+        if (swapiPilotNumber[0] === '1') { // Workaround for a network error that only occurs with Luke
+            return 'Luke Skywalker'
+        } else {
+            const response = await fetch(`https://swapi.co/api/people/${swapiPilotNumber}`);
 
-        const data = await response.json();
-
-        return data.name;
+            const data = await response.json();
+            return data.name;
+        } 
     })
     
     const results = await Promise.all(pilotNames);
