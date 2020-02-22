@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import './App.css';
+import './stars.css';
 import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory, SwapiDataNumber} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
+import TitleLogo from './images/StarWarsLogo.png'
 
 class App extends Component {
   constructor() {
@@ -94,15 +96,22 @@ class App extends Component {
    
     return (
       <div className="App">
-        <header>Star Wars Encyclopedia</header>
+        <header className='appTitle'>
+          <img className='StarWarsLogo' src={TitleLogo}>
+          </img>
+        </header>
         <div className="search-bar">
           <SearchBar searchInput={this.onInputChange} listSelector={this.onCategoryChange} fetchData={this.onClick} randomData={this.onClickRandom}/>
         </div>
-        <div className="results">
-          <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category} fetchDetails={this.onClickDetails}/>
+        <div className='appBody'>
+          <div className="results">
+            <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category} fetchDetails={this.onClickDetails}/>
+          </div>
+          <p className='resultHint'>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
+          <footer className='footer'>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
         </div>
-        <p>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
-        <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
+        <div className='stars'></div>
+        <div className='twinkling'></div>
       </div>
       
   );

@@ -5,9 +5,57 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: rgb(229, 177, 58)
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.appTitle {
+  width: 100%;
+}
+
+.StarWarsLogo {
+  width: 60%;
+  height: auto;
+  margin: auto;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.appBody {
+  width: 80%;
+  margin: auto;
+}
+
+.app {
+  overflow: scroll;
+}
+
+.results {
+  overflow: scroll;
+}
+
+button {
+  background: white;
+
+}
+
+select {
+  background: white;
+  width: 100px;
+  margin-right:5px;
+}
+
+input {
+  width: 200px;
+  border-radius: 10px;
+  margin-left: 5px;;
+}
+
+.searchButton {
+  margin: 5px;
+  border-radius: 10px;;
 }

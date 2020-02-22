@@ -18,19 +18,19 @@ export const SwapiDataNumber= async function(category) {
 
         switch(category) {
           case 'people':
-            randNum = Math.floor(Math.random() * 88);
+            randNum = (Math.floor(Math.random() * 87) + 1);
             break;
           case 'planets':
-            randNum = Math.floor(Math.random() * 62);
+            randNum = (Math.floor(Math.random() * 61) + 1);
             break;
           case 'films':
-            randNum = Math.floor(Math.random() * 8);
+            randNum = (Math.floor(Math.random() * 7) + 1);
             break;
           case 'species':
-            randNum = Math.floor(Math.random() * 38);
+            randNum = (Math.floor(Math.random() * 37) + 1);
             break;
           case 'vehicles':
-            randNum = Math.floor(Math.random() * 40);
+            randNum = (Math.floor(Math.random() * 39) + 1);
             break;
           case 'starships':
             alert(`Sorry, but 'Surprise me' unfortunately doesn't work with Starships.`)

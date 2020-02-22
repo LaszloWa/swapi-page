@@ -13,8 +13,8 @@ const SearchBar = ({ searchInput,  listSelector, fetchData, randomData}) => {
                 <option value='Species'>Species</option>
             </select>
             <input type='text' placeholder='Enter an integer, or search by name.' onChange={searchInput}/>
-            <button type='button' onClick={fetchData}>Search Database</button>
-            <button type='button' onClick={randomData}>Surprise me!</button>
+            <button className='searchButton' type='button' onClick={fetchData}>Search Database</button>
+            <button className='searchButton' type='button' onClick={randomData}>Surprise me!</button>
         </div>
     )
 }
