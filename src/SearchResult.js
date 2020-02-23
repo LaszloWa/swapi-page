@@ -1,9 +1,19 @@
 import React from 'react';
-// import {FilmData} from './FilmData';
 
 const SearchResult = ({results, type, getDetails}) => {
-
-    if(type === 'people') {
+    if (type === '' || results === 'Missing input') {
+        return (
+            <div>
+                <p>Please make sure you selected a category and entered what to search for.</p>
+            </div>
+        )
+    } else if (results.length === 0) {
+        return (
+            <div>
+                <p>Sorry, no search result was found for that input.</p>
+            </div>
+        )
+    } else if(type === 'people') {
         return (
             <div className="people-result">
             {results.map((result, index) => {
@@ -130,7 +140,6 @@ const SearchResult = ({results, type, getDetails}) => {
                 {results.map((result, index) => {
                     return (
                         <div key={result.name}>
-                            {console.log(index)}
                             <h2>Name: {result.name}</h2>
                             <button value={index} type='button' onClick={getDetails}>Display details</button>
                             <p>Model: {result.model}</p>

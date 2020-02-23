@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import './App.css';
+import './stars.css';
 import {SwapiDataString, peopleCategory, planetCategory, filmCategory, speciesCategory, vehiclesCategory, SwapiDataNumber} from './util';
 import SearchBar from './SearchBar';
 import ResultDisplay from './ResultDisplay';
+import TitleLogo from './images/StarWarsLogo.png'
 
 class App extends Component {
   constructor() {
@@ -40,17 +42,22 @@ class App extends Component {
     }
   }
 
+  // Action triggered by button 'Display details', which resolves the urls that are given as results in the targeted object.
   onClickDetails = async (event) => {
     
     const eventTargetValue = event.target.value;
-    console.log(this.state.detailsResolved)
 
     if (this.state.detailsResolved.includes(eventTargetValue)) {
-      console.log('Already pressed the button')
+      // This is to avoid calling the fetch method for details twice, which would result in a network error.
     } else {
-      console.log('the result ', this.state.resultString)
       let categorySelector = '';
+      
+      // this stores the index of the targeted object, so that it can't be triggered twice
+      const retrievedDetails = this.state.detailsResolved
+      retrievedDetails.push(eventTargetValue);
+      this.setState({detailsResolved: retrievedDetails})
 
+      // passes the correct function to fetch the data into the below ternary operator 'result'
       switch (this.state.category) {
         case 'people':
           categorySelector = peopleCategory;
@@ -74,40 +81,44 @@ class App extends Component {
           break;
       }
     
+      // passes different arguments depending on whether the initial result was returned randomly or selectively, because selective queries can contain more than 1 result, whereas random queries only contain 1 result
       const result = eventTargetValue === 'random' 
       ? await categorySelector(this.state.category, this.state.resultNumber) 
       : await categorySelector(this.state.category, this.state.resultString, [eventTargetValue])
       
-      console.log('result ', result)
       eventTargetValue === 'random'
       ? this.setState({resultNumber: result})
       : this.setState({resultString: result})
-
-      const retrievedDetails = this.state.detailsResolved
-      retrievedDetails.push(eventTargetValue);
-
-      this.setState({detailsResolved: retrievedDetails})
     } 
   }
 
   render() {
-   
     return (
       <div className="App">
-        <header>Star Wars Encyclopedia</header>
+        <header className='appTitle'>
+          <img className='StarWarsLogo' src={TitleLogo} alt='Star Wars logo'>
+          </img>
+        </header>
         <div className="search-bar">
           <SearchBar searchInput={this.onInputChange} listSelector={this.onCategoryChange} fetchData={this.onClick} randomData={this.onClickRandom}/>
         </div>
-        <div className="results">
-          <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category} fetchDetails={this.onClickDetails}/>
+        <div className='appBody'>
+          <div className="results">
+            <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category} fetchDetails={this.onClickDetails}/>
+          </div>
+          <p className='resultHint'>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
+          <footer className='footer'>
+            <p>All Star Wars information provided by <a className='links' href='https://swapi.co/'>SWAPI</a></p>
+            <p>Background courtesy of <a className='links' href='http://www.script-tutorials.com/'>Script Tutorials</a></p>
+            <p>This app was built by <a className='links' href='www.laswag.dev'>LasWa</a></p>
+
+            </footer>
         </div>
-        <p>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
-        <footer>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
-      </div>
-      
-  );
+        <div className='stars'></div>
+        <div className='twinkling'></div>
+      </div>   
+    );
   }
-  
 }
 
 export default App;

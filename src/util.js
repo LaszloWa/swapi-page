@@ -2,11 +2,14 @@
 
 export const SwapiDataString = async function(category, userInput) {
     try {
-        const respString = await fetch(`https://swapi.co/api/${category}/?search=${userInput}`);
-        let data = await respString.json();
-        console.log('util', data.results);
-
-        return data.results;
+        if (category === '' || userInput === 0 || userInput === '') {
+            return 'Missing input'
+        } else {
+            const respString = await fetch(`https://swapi.co/api/${category}/?search=${userInput}`);
+            let data = await respString.json();
+    
+            return data.results;
+        }
     } catch (e) {
         return 'Sorry, an unexpected error has occurred :('
     }
@@ -14,36 +17,40 @@ export const SwapiDataString = async function(category, userInput) {
 
 export const SwapiDataNumber= async function(category) {
     try{
-        let randNum = 0;
+        if (category === '') {
+            return 'Please select a category.'
+        } else {
+            let randNum = 0;
 
-        switch(category) {
-          case 'people':
-            randNum = Math.floor(Math.random() * 88);
-            break;
-          case 'planets':
-            randNum = Math.floor(Math.random() * 62);
-            break;
-          case 'films':
-            randNum = Math.floor(Math.random() * 8);
-            break;
-          case 'species':
-            randNum = Math.floor(Math.random() * 38);
-            break;
-          case 'vehicles':
-            randNum = Math.floor(Math.random() * 40);
-            break;
-          case 'starships':
-            alert(`Sorry, but 'Surprise me' unfortunately doesn't work with Starships.`)
-            break;
-          default:
-            alert('Sorry, something seems to have gone wrong, please try again.')
-        }
+            switch(category) {
+                case 'people':
+                    randNum = (Math.floor(Math.random() * 87) + 1);
+                    break;
+                case 'planets':
+                    randNum = (Math.floor(Math.random() * 61) + 1);
+                    break;
+                case 'films':
+                    randNum = (Math.floor(Math.random() * 7) + 1);
+                    break;
+                case 'species':
+                    randNum = (Math.floor(Math.random() * 37) + 1);
+                    break;
+                case 'vehicles':
+                    randNum = (Math.floor(Math.random() * 39) + 1);
+                    break;
+                case 'starships':
+                    alert(`Sorry, but 'Surprise me' unfortunately doesn't work with Starships.`)
+                    break;
+                default:
+                    alert('Sorry, something seems to have gone wrong, please try again.')
+            }
 
-        const response = await fetch(`https://swapi.co/api/${category}/${randNum}`);
-        const data = await response.json();
+            const response = await fetch(`https://swapi.co/api/${category}/${randNum}`);
 
-        console.log('Random util: ', data);
-        return data;
+            const data = await response.json();
+
+            return data;
+        }   
     } catch (e) {
         return 'Sorry, an unexpected error has occurred :('
     }
@@ -55,6 +62,7 @@ export const SwapiDataNumber= async function(category) {
 
 export const getPeople = async function(initialArray, category) {   
     
+    // Different results have different keys for people. This sets the correct key so that the getPeople function can be used for multiple categories
     let placeholder = '';
     if (category === 'films') {
         placeholder = 'characters';
@@ -253,7 +261,7 @@ export const getStarships = async function(initialArray) {
 
 
 // functions fetching data for the different categories
-
+// These make sure that for selective results containing more than one returned object, the details are returned for the targeted object wihout deleting the remaining objects
 const inputArrayFunction = function(array, index) {
     let inputArray = '';
 
@@ -281,7 +289,6 @@ const outputArrayFunction = function(array, index, result) {
 // all data for category 'people'
 export const peopleCategory = async function (category, array, index) {
     const inputArray = inputArrayFunction(array, index);
-    console.log(inputArray)
     const addingPeopleHomeworld = await getHomeworld(inputArray, category);
     const addingPeopleFilms = await getFilms(addingPeopleHomeworld);
     const addingPeopleSpecies = await getSpecies(addingPeopleFilms);
