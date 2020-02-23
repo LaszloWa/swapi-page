@@ -42,21 +42,23 @@ class App extends Component {
     }
   }
 
+  // Action triggered by button 'Display details', which resolves the urls that are given as results in the targeted object.
   onClickDetails = async (event) => {
     
     const eventTargetValue = event.target.value;
     console.log(this.state.detailsResolved)
 
     if (this.state.detailsResolved.includes(eventTargetValue)) {
-      console.log('Already pressed the button')
+      // This is to avoid calling the fetch method for details twice, which would result in a network error.
     } else {
-      console.log('the result ', this.state.resultString)
       let categorySelector = '';
+      
+      // this stores the index of the targeted object, so that it can't be triggered twice
       const retrievedDetails = this.state.detailsResolved
       retrievedDetails.push(eventTargetValue);
-
       this.setState({detailsResolved: retrievedDetails})
 
+      // passes the correct function to fetch the data into the below ternary operator 'result'
       switch (this.state.category) {
         case 'people':
           categorySelector = peopleCategory;
@@ -80,11 +82,11 @@ class App extends Component {
           break;
       }
     
+      // passes different arguments depending on whether the initial result was returned randomly or selectively, because selective queries can contain more than 1 result, whereas random queries only contain 1 result
       const result = eventTargetValue === 'random' 
       ? await categorySelector(this.state.category, this.state.resultNumber) 
       : await categorySelector(this.state.category, this.state.resultString, [eventTargetValue])
       
-      console.log('result ', result)
       eventTargetValue === 'random'
       ? this.setState({resultNumber: result})
       : this.setState({resultString: result})
@@ -92,7 +94,6 @@ class App extends Component {
   }
 
   render() {
-   
     return (
       <div className="App">
         <header className='appTitle'>
@@ -108,18 +109,17 @@ class App extends Component {
           </div>
           <p className='resultHint'>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
           <footer className='footer'>
-            <p>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</p>
-            <p>This app was built by <a className='portfolioLink' href='www.laswag.dev'>LasWa</a></p>
+            <p>All Star Wars information provided by <a className='links' href='https://swapi.co/'>SWAPI</a></p>
+            <p>Background courtesy of <a className='links' href='http://www.script-tutorials.com/'>Script Tutorials</a></p>
+            <p>This app was built by <a className='links' href='www.laswag.dev'>LasWa</a></p>
 
             </footer>
         </div>
         <div className='stars'></div>
         <div className='twinkling'></div>
-      </div>
-      
-  );
+      </div>   
+    );
   }
-  
 }
 
 export default App;

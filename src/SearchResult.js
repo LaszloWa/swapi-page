@@ -1,8 +1,6 @@
 import React from 'react';
-// import {FilmData} from './FilmData';
 
 const SearchResult = ({results, type, getDetails}) => {
-    console.log(results)
     if (type === '' || results === 'Missing input') {
         return (
             <div>
@@ -142,7 +140,6 @@ const SearchResult = ({results, type, getDetails}) => {
                 {results.map((result, index) => {
                     return (
                         <div key={result.name}>
-                            {console.log(index)}
                             <h2>Name: {result.name}</h2>
                             <button value={index} type='button' onClick={getDetails}>Display details</button>
                             <p>Model: {result.model}</p>
