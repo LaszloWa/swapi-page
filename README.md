@@ -28,5 +28,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Final words
 
-If you like the app, have feedback or have noticed something that can be improved (or even a bug 😮), please don't hesitate to let me know on [Twitter](www.twitter.com/LasWag). All praise and constructive criticism welcome!
+If you like the app, have feedback or have noticed something that can be improved (or even a bug 😮), please don't hesitate to let me know on [Twitter](https://twitter.com/LaszloWa). All praise and constructive criticism welcome!
 
