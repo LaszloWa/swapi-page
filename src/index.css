@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: rgb(229, 177, 58)
+  color: rgb(229, 177, 58);
 }
 
 code {
@@ -36,16 +36,18 @@ code {
 
 .results {
   overflow: scroll;
+  margin-bottom: 3rem;
 }
 
 button {
-  background: white;
-
+  background: rgba(245, 245, 245, 0.795);
+  border-color: grey;
+  border-radius: 10px;
 }
 
 select {
-  background: white;
-  width: 100px;
+  background: rgba(245, 245, 245, 0.795);
+  width: 110px;
   margin-right:5px;
 }
 
@@ -53,9 +55,26 @@ input {
   width: 200px;
   border-radius: 10px;
   margin-left: 5px;;
+  background-color: rgba(245, 245, 245, 0.795);
+  border-color: grey;
 }
 
 .searchButton {
   margin: 5px;
-  border-radius: 10px;;
+}
+
+.searchBar {
+  margin-bottom: 2rem;
+}
+
+.footer {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid darkgoldenrod;
+}
+
+.portfolioLink {
+  text-decoration: none;
+  color: rgb(229, 177, 58);
+  font-weight: bold;
 }

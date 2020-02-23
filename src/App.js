@@ -52,6 +52,10 @@ class App extends Component {
     } else {
       console.log('the result ', this.state.resultString)
       let categorySelector = '';
+      const retrievedDetails = this.state.detailsResolved
+      retrievedDetails.push(eventTargetValue);
+
+      this.setState({detailsResolved: retrievedDetails})
 
       switch (this.state.category) {
         case 'people':
@@ -84,11 +88,6 @@ class App extends Component {
       eventTargetValue === 'random'
       ? this.setState({resultNumber: result})
       : this.setState({resultString: result})
-
-      const retrievedDetails = this.state.detailsResolved
-      retrievedDetails.push(eventTargetValue);
-
-      this.setState({detailsResolved: retrievedDetails})
     } 
   }
 
@@ -97,7 +96,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className='appTitle'>
-          <img className='StarWarsLogo' src={TitleLogo}>
+          <img className='StarWarsLogo' src={TitleLogo} alt='Star Wars logo'>
           </img>
         </header>
         <div className="search-bar">
@@ -108,7 +107,11 @@ class App extends Component {
             <ResultDisplay resultNumber={this.state.resultNumber} resultString={this.state.resultString} type={this.state.category} fetchDetails={this.onClickDetails}/>
           </div>
           <p className='resultHint'>Please note that some categories, such as vehicles, frequently contain a non-valid result when using 'Surprise me', as the database contains gaps in its indexing.</p>
-          <footer className='footer'>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</footer>
+          <footer className='footer'>
+            <p>All Star Wars information provided is thanks to the swapi API at https://swapi.co/</p>
+            <p>This app was built by <a className='portfolioLink' href='www.laswag.dev'>LasWa</a></p>
+
+            </footer>
         </div>
         <div className='stars'></div>
         <div className='twinkling'></div>

@@ -2,11 +2,16 @@
 
 export const SwapiDataString = async function(category, userInput) {
     try {
-        const respString = await fetch(`https://swapi.co/api/${category}/?search=${userInput}`);
-        let data = await respString.json();
-        console.log('util', data.results);
-
-        return data.results;
+        console.log(userInput)
+        if (category === '' || userInput === 0 || userInput === '') {
+            return 'Missing input'
+        } else {
+            const respString = await fetch(`https://swapi.co/api/${category}/?search=${userInput}`);
+            let data = await respString.json();
+            console.log('util', data.results);
+    
+            return data.results;
+        }
     } catch (e) {
         return 'Sorry, an unexpected error has occurred :('
     }
@@ -14,36 +19,40 @@ export const SwapiDataString = async function(category, userInput) {
 
 export const SwapiDataNumber= async function(category) {
     try{
-        let randNum = 0;
+        if (category === '') {
+            return 'Please select a category.'
+        } else {
+            let randNum = 0;
 
-        switch(category) {
-          case 'people':
-            randNum = (Math.floor(Math.random() * 87) + 1);
-            break;
-          case 'planets':
-            randNum = (Math.floor(Math.random() * 61) + 1);
-            break;
-          case 'films':
-            randNum = (Math.floor(Math.random() * 7) + 1);
-            break;
-          case 'species':
-            randNum = (Math.floor(Math.random() * 37) + 1);
-            break;
-          case 'vehicles':
-            randNum = (Math.floor(Math.random() * 39) + 1);
-            break;
-          case 'starships':
-            alert(`Sorry, but 'Surprise me' unfortunately doesn't work with Starships.`)
-            break;
-          default:
-            alert('Sorry, something seems to have gone wrong, please try again.')
-        }
+            switch(category) {
+            case 'people':
+                randNum = (Math.floor(Math.random() * 87) + 1);
+                break;
+            case 'planets':
+                randNum = (Math.floor(Math.random() * 61) + 1);
+                break;
+            case 'films':
+                randNum = (Math.floor(Math.random() * 7) + 1);
+                break;
+            case 'species':
+                randNum = (Math.floor(Math.random() * 37) + 1);
+                break;
+            case 'vehicles':
+                randNum = (Math.floor(Math.random() * 39) + 1);
+                break;
+            case 'starships':
+                alert(`Sorry, but 'Surprise me' unfortunately doesn't work with Starships.`)
+                break;
+            default:
+                alert('Sorry, something seems to have gone wrong, please try again.')
+            }
 
-        const response = await fetch(`https://swapi.co/api/${category}/${randNum}`);
-        const data = await response.json();
+            const response = await fetch(`https://swapi.co/api/${category}/${randNum}`);
+            const data = await response.json();
 
-        console.log('Random util: ', data);
-        return data;
+            console.log('Random util: ', data);
+            return data;
+        }   
     } catch (e) {
         return 'Sorry, an unexpected error has occurred :('
     }
