@@ -46,7 +46,6 @@ class App extends Component {
   onClickDetails = async (event) => {
     
     const eventTargetValue = event.target.value;
-    console.log(this.state.detailsResolved)
 
     if (this.state.detailsResolved.includes(eventTargetValue)) {
       // This is to avoid calling the fetch method for details twice, which would result in a network error.
